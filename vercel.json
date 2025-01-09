@@ -2,19 +2,25 @@
     "version": 2,
     "framework": null,
     "functions": {
-        "api/index.php": { "runtime": "vercel-php@0.7.3" }
+        "api/index.php": {
+            "runtime": "vercel-php@0.7.3"
+        }
     },
     "routes": [
-        { "src": "/build/(.*)", "dest": "/public/build/" },
+        { "src": "/build/(.*)", "dest": "/public/build/$1" },
+        { "src": "/storage/(.*)", "dest": "/public/storage/$1" },
+        { "src": "/favicon.ico", "dest": "/public/favicon.ico" },
+        { "src": "/robots.txt", "dest": "/public/robots.txt" },
+        { "src": "/sitemap.xml", "dest": "/public/sitemap.xml" },
         { "src": "/(.*)", "dest": "/api/index.php" }
     ],
     "public": true,
-    "buildCommand": "vite build",
+    "buildCommand": "composer install --optimize-autoloader --no-dev && php artisan storage:link && php artisan config:cache && php artisan route:cache && php artisan view:cache",
     "outputDirectory": "public",
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "false",
-        "APP_URL": "https://yourproductionurl.com",
+        "APP_URL": "https://your-vercel-app.vercel.app",
         "APP_KEY": "base64:TGaVaXwhWgjn9akhE4SCSIjGG/cQqvICUQ+PgLA3Bs0=",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
@@ -23,12 +29,20 @@
         "APP_SERVICES_CACHE": "/tmp/services.php",
         "VIEW_COMPILED_PATH": "/tmp",
         "CACHE_DRIVER": "array",
-        "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie",
+        "LOG_CHANNEL": "stderr",
         "DB_CONNECTION": "mysql",
         "DB_HOST": "4gg.h.filess.io",
         "DB_PORT": "3306",
         "DB_DATABASE": "db2024_stormtorn",
-        "DB_USERNAME": "db2024_stormtorn"
+        "DB_USERNAME": "db2024_stormtorn",
+        "DB_PASSWORD": "your_db_password",
+        "SESSION_COOKIE": "secure_cookie_name",
+        "APP_STORAGE": "/tmp",
+        "LOG_LEVEL": "debug",
+        "MAIL_MAILER": "log",
+        "QUEUE_CONNECTION": "sync",
+        "FILESYSTEM_DISK": "local",
+        "DB_SSL_DSN": "sslmode=require"
     }
 }
