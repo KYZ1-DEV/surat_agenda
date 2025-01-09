@@ -12,11 +12,31 @@ use App\Livewire\SuratKeluar\SuratKeluarTable;
 class SuratKeluarEdit extends Component
 {
 
-
+    public $hideButton = true;
     public $modalSuratKeluarEdit = false;
     public $modelSuratMasuk;
     public $suratMasuk;
     public SuratKeluarForm $form;
+
+
+
+    public function mount(){
+        // Ambil URL saat ini
+            $url = url()->current();
+            $segments = explode('/', parse_url($url, PHP_URL_PATH));
+
+            $segment1 = $segments[1] ?? null;
+            $segment2 = $segments[2] ?? null;
+
+            // Logika untuk menyembunyikan tombol jika segment2 ada
+            if ($segment1 === 'sekretariat' && $segment2 != null) {
+                $this->hideButton = false;
+            } else {
+                $this->hideButton = true;
+            }
+
+    }
+
 
 
     #[On('dispatch-surat-keluar-table-edit')]
@@ -50,6 +70,8 @@ class SuratKeluarEdit extends Component
 
     public function render()
     {
-        return view('livewire.surat-keluar.surat-keluar-edit');
+        return view('livewire.surat-keluar.surat-keluar-edit', [
+            'hideButton' => $this->hideButton,
+        ]);
     }
 }

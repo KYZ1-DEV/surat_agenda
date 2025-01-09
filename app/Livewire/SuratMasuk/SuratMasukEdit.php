@@ -12,7 +12,7 @@ class SuratMasukEdit extends Component
 {
     public $modalSuratMasukEdit = false;
 
-    public $hideDeleteButton = false;
+    public $hideButton = true;
 
     public SuratMasukForm $form;
 
@@ -25,10 +25,10 @@ class SuratMasukEdit extends Component
         $segment2 = $segments[2] ?? null;
 
         // Logika untuk menyembunyikan tombol jika segment2 ada
-        if ($segment1 === 'sekretariat' && $segment2 == null) {
-            $this->hideDeleteButton = true;
+        if ($segment1 === 'sekretariat' && $segment2 != null) {
+            $this->hideButton = false;
         } else {
-            $this->hideDeleteButton = false;
+            $this->hideButton = true;
         }
 
     }
@@ -58,7 +58,7 @@ class SuratMasukEdit extends Component
     public function render()
     {
         return view('livewire.surat-masuk.surat-masuk-edit', [
-            'hideDeleteButton' => $this->hideDeleteButton,
+            'hideButton' => $this->hideButton,
         ]);
     }
 }

@@ -14,6 +14,8 @@ class SuratKeluarCreate extends Component
     public $modalSuratKeluarCreate = false;
 
     public $bidang_surat;
+    public $hideButton = true;
+
 
 
     public function mount()
@@ -25,6 +27,19 @@ class SuratKeluarCreate extends Component
             $roles = $user->getRoleNames();  
             $this->form->bidang_surat = $roles['0'];
             $this->bidang_surat = $roles['0'];
+        }
+
+        $url = url()->current();
+        $segments = explode('/', parse_url($url, PHP_URL_PATH));
+
+        $segment1 = $segments[1] ?? null;
+        $segment2 = $segments[2] ?? null;
+
+        // Logika untuk menyembunyikan tombol jika segment2 ada
+        if ($segment1 === 'sekretariat' && $segment2 != null) {
+            $this->hideButton = false;
+        } else {
+            $this->hideButton = true;
         }
 
     }
@@ -56,7 +71,11 @@ class SuratKeluarCreate extends Component
 
     public function render()
     {
-        return view('livewire.surat-keluar.surat-keluar-create');
+        return view('livewire.surat-keluar.surat-keluar-create',
+        [
+            'hideButton' => $this->hideButton,
+        ]
+    );
     }
 
 

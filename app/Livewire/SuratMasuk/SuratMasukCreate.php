@@ -10,6 +10,7 @@ use App\Livewire\SuratMasuk\SuratMasukTable;
 
 class SuratMasukCreate extends Component
 {
+    public $hideButton = true;
     
     public SuratMasukForm $form;
     public $modalSuratMasukCreate = false;
@@ -27,6 +28,21 @@ class SuratMasukCreate extends Component
         }
 
         $this->form->tanggal_terima_surat = now()->toDateString();
+
+        $url = url()->current();
+        $segments = explode('/', parse_url($url, PHP_URL_PATH));
+
+        $segment1 = $segments[1] ?? null;
+        $segment2 = $segments[2] ?? null;
+
+        // Logika untuk menyembunyikan tombol jika segment2 ada
+        if ($segment1 === 'sekretariat' && $segment2 != null) {
+            $this->hideButton = false;
+        } else {
+            $this->hideButton = true;
+        }
+
+
     }
 
 
@@ -53,6 +69,10 @@ class SuratMasukCreate extends Component
 
     public function render()
     {
-        return view('livewire.surat-masuk.surat-masuk-create');
+        return view('livewire.surat-masuk.surat-masuk-create',
+        [
+            'hideButton' => $this->hideButton,
+        ]
+    );
     }
 }

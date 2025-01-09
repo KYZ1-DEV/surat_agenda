@@ -22,8 +22,6 @@
             </div>
 
             <div x-show="activeTab === 'tab2'">
-                {{-- <h4 class="font-bold mt-4 mb-2 text-xl">Tab 2 Content</h4>
-                <p class="text-md">This is the content for Tab 2. You can put any information here.</p> --}}
                 <livewire:SuratKeluar.surat-keluar-index />
 
             </div>

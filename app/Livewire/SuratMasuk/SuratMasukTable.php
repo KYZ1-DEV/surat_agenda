@@ -21,15 +21,12 @@ class SuratMasukTable extends Component
     public $paginate = 5; // Jumlah data per halaman
     public $sortBy = 'surat_masuk.id'; // Kolom default untuk pengurutan
     public $sortDirection = 'desc'; // Arah pengurutan default
-    public $bidang_surat;
     public $hideDeleteButton = false;
 
 
-    // Lifecycle Hook
-    public function mount()
-    {
-        $this->setBidangSurat();
 
+    public function mount(){
+        $this->form->bidang_surat = $this->setBidangSurat();
 
         $segment1 = Request::segment(1);
         $segment2 = Request::segment(2);
@@ -39,46 +36,47 @@ class SuratMasukTable extends Component
         }
     }
 
-    public function updated()
-    {
-        $this->setBidangSurat();
-    }
 
-    // Method untuk mengatur bidang_surat
-    private function setBidangSurat()
+
+    public function setBidangSurat()
     {
         if (Auth::check()) {
             $auth = Auth::user()->id;
             $user = User::find($auth);
             $roles = $user->getRoleNames();
-
-            $this->form->bidang_surat = $roles[0];
-            $this->bidang_surat = $roles[0];
-
-            // Jika role adalah "sekretariat"
-            if ($this->bidang_surat === 'sekretariat') {
-                $routeSegment = Request::segment(2); // Ambil segment URL setelah "sekretariat/"
-                $this->bidang_surat = $routeSegment ?: 'sekretariat'; // Default jika tidak ada segment
+            if ($roles['0'] == 'sekretariat') {
+                $routeSegment = Request::segment(2); 
+                return $routeSegment ?: 'sekretariat';
+            }else{
+                return $roles[0];
             }
         }
+
+
     }
 
+    // Realtime proses
     #[On('dispatch-surat-masuk-create-save')]
     #[On('dispatch-surat-masuk-update-edit')]
     #[On('dispatch-surat-masuk-delete-del')]
     public function render()
     {
+        
         return view('livewire.surat-masuk.surat-masuk-table', [
-            'data' => SuratMasuk::query()
-                ->when($this->form->id, fn ($query, $id) => $query->where('id', 'like', '%' . $id . '%'))
-                ->where('bidang_surat', $this->bidang_surat)
-                ->when($this->form->kategori_surat, fn ($query, $kategori) => $query->where('kategori_surat', 'like', '%' . $kategori . '%'))
-                ->when($this->form->tanggal_terima_surat, fn ($query, $tanggal) => $query->where('tanggal_terima_surat', 'like', '%' . $tanggal . '%'))
-                ->when($this->form->no_agenda, fn ($query, $noAgenda) => $query->where('no_agenda', 'like', '%' . $noAgenda . '%'))
-                ->when($this->form->nomor_surat, fn ($query, $nomor) => $query->where('nomor_surat', 'like', '%' . $nomor . '%'))
-                ->when($this->form->asal_surat_pengirim, fn ($query, $asal) => $query->where('asal_surat_pengirim', 'like', '%' . $asal . '%'))
+            'data' => SuratMasuk::where('id', 'like', '%' . $this->form->id . '%')
+                ->where('kategori_surat', 'like', '%' . $this->form->kategori_surat . '%')
+                ->where('bidang_surat', 'like', '%' . $this->form->bidang_surat . '%')
+                ->where('tanggal_terima_surat', 'like', '%' . $this->form->tanggal_terima_surat . '%')
+                ->where('no_agenda', 'like', '%' . $this->form->no_agenda . '%')
+                ->where('nomor_surat', 'like', '%' . $this->form->nomor_surat . '%')
+                ->where('asal_surat_pengirim', 'like', '%' . $this->form->asal_surat_pengirim . '%')
                 ->with('suratKeluar')
-                ->orderBy($this->sortBy, $this->sortDirection)->get()
+                ->orderBy($this->sortBy, $this->sortDirection)
+                ->paginate($this->paginate),
         ]);
+
+
     }
+
+
 }

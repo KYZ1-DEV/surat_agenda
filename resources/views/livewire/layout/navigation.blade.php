@@ -74,10 +74,37 @@ new class extends Component
                         </x-nav-link>
                         
                         <x-nav-link :href="route('sekre.kearsipan.index')" :active="request()->routeIs('sekre.kearsipan.index')" wire:navigate>
-                            {{ __('Kearsipan') }} 
+                            {{ __('Agenda Surat Kearsipan') }} 
+                        </x-nav-link>
+                        <x-nav-link :href="route('sekre.layanan.index')" :active="request()->routeIs('sekre.layanan.index')" wire:navigate>
+                            {{ __('Agenda Surat Layanan') }} 
+                        </x-nav-link>
+                        <x-nav-link :href="route('sekre.pengembangan.index')" :active="request()->routeIs('sekre.pengembangan.index')" wire:navigate>
+                            {{ __('Agenda Surat Pengembangan') }} 
                         </x-nav-link>
                     @endrole
 
+
+
+                    @role('kearsipan')
+                        <x-nav-link :href="$this->getDashboardRoute()" :active="request()->routeIs(Request::segment(1))" wire:navigate>
+                            {{ __('Agenda Surat') }} {{ Request::segment(1) }}
+                        </x-nav-link>
+                    @endrole
+
+
+                    @role('layanan')
+                        <x-nav-link :href="$this->getDashboardRoute()" :active="request()->routeIs(Request::segment(1))" wire:navigate>
+                            {{ __('Agenda Surat') }} {{ Request::segment(1) }}
+                        </x-nav-link>
+                    @endrole
+
+
+                    @role('pengembangan')
+                        <x-nav-link :href="$this->getDashboardRoute()" :active="request()->routeIs(Request::segment(1))" wire:navigate>
+                            {{ __('Agenda Surat') }} {{ Request::segment(1) }}
+                        </x-nav-link>
+                    @endrole
 
 
                 </div>
