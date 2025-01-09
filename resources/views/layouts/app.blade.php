@@ -9,7 +9,7 @@
             {{ Request::segment(1) == 'sekretariat' ? 'Dashboad Sekretariat' : (Request::segment(1) == 'admin' ? 'Dashboard Admin '  : (Request::segment(1) == 'kearsipan' ? 'Dashboard Bidang Kearsipan' : (Request::segment(1) == 'layanan' ? 'Dashboard layanan' : (Request::segment(1) == 'pengembangan' ? 'Dashboard pengembangan' : 'Aplikasi Agenda Surat') ))) }}
         </title>
 
-        <link rel="icon" type="image/png" href="{{ asset('logo_Dis.png') }}">
+        <link rel="icon" type="image/png" href="{{ asset('images/logo_Dis.png') }}">
 
 
 

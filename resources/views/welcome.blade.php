@@ -58,7 +58,7 @@
                             <div class="card lg:card-side bg-base-100 shadow-xl w-full max-w-4xl">
                                 <figure class="flex-1">
                                     <img
-                                        src="{{ asset('agenda_surat.png') }}"
+                                        src="{{ asset('images/agenda_surat.png') }}"
                                         alt="Aplikasi Agenda Surat"
                                         class="w-full h-full object-cover rounded-l-lg" />
                                 </figure>
