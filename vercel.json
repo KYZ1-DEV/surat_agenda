@@ -30,7 +30,7 @@
         "DB_PORT" :"3307",
         "DB_DATABASE": "appChat_togetherat",
         "DB_USERNAME": "appChat_togetherat",
-        "DB_PASSWORD": "ba6d3f869861d2162197e28a4de93a924c4c9bd3",
+        "DB_PASSWORD": "ba6d3f869861d2162197e28a4de93a924c4c9bd3"
 
         
     }
