@@ -18,6 +18,12 @@ Route::middleware(['auth','verified','chek_role'])->group(function(){
 
     
     Route::get('/home', function(){
+        if (Auth::check()) {
+            $user = \App\Models\User::find(Auth::id());
+            $user->status_login = false;
+            $user->save();
+        }
+
         Auth::logout();
         return view('welcome');
     })->name('dashboard');
@@ -33,6 +39,20 @@ Route::middleware(['auth','verified','chek_role'])->group(function(){
     Route::get('/sekretariat', function () {
         return view('sekre.index');
     })->middleware('role:sekretariat')->name('sekretariat');
+
+
+    Route::get('/kearsipan', function () {
+        return view('kearsipan.index');
+    })->middleware('role:kearsipan')->name('kearsipan');
+
+
+    Route::get('/layanan', function () {
+        return view('layanan.index');
+    })->middleware('role:layanan')->name('layanan');
+
+    Route::get('/pengembangan', function () {
+        return view('pengembangan.index');
+    })->middleware('role:pengembangan')->name('pengembangan');
 
 
 
@@ -59,11 +79,17 @@ Route::middleware(['auth','verified','chek_role'])->group(function(){
     
     Route::prefix('sekretariat')->middleware('role:sekretariat')->group(function () {
 
-        // Route::get('/kearsipan', \App\Livewire\User\AdminCrudUser::class)->name('sekre.kearsipan.index');
         Route::get('/kearsipan', function () {
             return view('sekre.kearsipan');
         })->name('sekre.kearsipan.index');
-    
+
+        Route::get('/pengembangan', function () {
+            return view('sekre.pengembangan');
+        })->name('sekre.pengembangan.index');
+
+        Route::get('/layanan', function () {
+            return view('sekre.layanan');
+        })->name('sekre.layanan.index');
 
 
     });

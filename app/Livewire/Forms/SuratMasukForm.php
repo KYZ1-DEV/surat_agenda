@@ -46,21 +46,6 @@ class SuratMasukForm extends Form
 
 
 
-    // public function __construct()
-    // {
-    //     $this->id = null;
-    //     $this->kategori_surat = null;
-    //     $this->tanggal_terima_surat = null;
-    //     $this->no_agenda = null;
-    //     $this->nomor_surat = null;
-    //     $this->asal_surat_pengirim = null;
-    //     $this->bidang_surat = null;
-    //     $this->perihal_isi_surat = null;
-    //     $this->isi_disposisi = null;
-    //     $this->keterangan = null;
-    // }
-
-
     public function store()
     {
         $this->validate();

@@ -1,6 +1,8 @@
 <div wire:poll>
     {{-- @dd($data) --}}
-    <x-select wire:model="paginate" class="text-sm mt-8">
+    {{-- @dd($route) --}}
+    <label class="text-xs" for="jumlahSurat">Jumlah Data Yang Ditampilkan</label>
+    <x-select wire:model="paginate" id="jumlahSurat" class="text-sm mt-8">
         <option value="3">3</option>
         <option value="5">5</option>
         <option value="10">10</option>
@@ -8,6 +10,7 @@
         <option value="50">50</option>
         <option value="100">100</option>
     </x-select>
+
 
     <div class="overflow-x-auto mt-4">
         <table class="table table-zebra">
@@ -84,9 +87,14 @@
                         <td class="text-center">
                             <x-button @click="$dispatch('dispatch-surat-keluar-table-edit', { id: '{{ $item->id }}' })"
                                 type="button" class="text-sm">Detail</x-button>
-                            <x-danger-button
-                                @click="$dispatch('dispatch-surat-keluar-table-delete', { id: '{{ $item->id }}', isi : '{{ $item->perihal_isi_surat }}' })">
-                                Delete</x-danger-button>
+
+                            @if (!$hideDeleteButton)
+
+                                    <x-danger-button
+                                        @click="$dispatch('dispatch-surat-keluar-table-delete', { id: '{{ $item->id }}', isi : '{{ $item->perihal_isi_surat }}' })">
+                                        Delete</x-danger-button>
+
+                                @endif
                         </td>
 
                     </tr>

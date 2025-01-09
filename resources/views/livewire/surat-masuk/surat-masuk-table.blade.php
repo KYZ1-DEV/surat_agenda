@@ -3,8 +3,8 @@
 
     {{-- {{ $form->kategori_surat == ? dd($form) }} --}}
     {{-- @dd($p) --}}
-    <label for="jumlahSurat">Jumlah Data </label>
-    <x-select wire:model.defer="paginate" id="jumlahSurat" class="text-sm mt-8">
+    <label class="text-xs" for="jumlahSurat">Jumlah Data Yang Ditampilkan</label>
+    <x-select wire:model="paginate" id="jumlahSurat" class="text-sm mt-8">
         <option value="3">3</option>
         <option value="5">5</option>
         <option value="10">10</option>
@@ -43,6 +43,11 @@
 
                 </tr>
                 <tr>
+                    {{-- @dump($form) --}}
+
+                    {{-- @php
+                        var_dump($form);
+                    @endphp --}}
 
                     <td>
                         <span wire:loading.class="loading loading-spinner loading-xs text-white"></span>
@@ -76,7 +81,7 @@
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td  class="text-center">{{ $item->kategori_surat }}</td>
                         <td  class="text-center">{{ \Carbon\Carbon::parse($item->tanggal_terima_surat)->format('d-M-y') }}</td>
-                        <td class="text-center">{{ $item->no_agenda }}</td>
+                        <td class="text-center">{{ $item->bidang_surat }}</td>
                         <td  class="text-center">{{ $item->nomor_surat }}</td>
                         <td  class="text-center text-sm">{{ $item->asal_surat_pengirim }}</td>
                         <td  class="text-center text-sm">{{ $item->suratKeluar->nomor_surat ?? 'Belum ada Surat Keluar' }}</td>
@@ -109,6 +114,6 @@
     </div>
 
     <div class="mt-3">
-        {{-- {{ $data->onEachSide(1)->links() }} --}}
+        {{ $data->onEachSide(1)->links() }}
     </div>
 </div>
