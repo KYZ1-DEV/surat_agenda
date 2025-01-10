@@ -252,60 +252,56 @@
         document.addEventListener('DOMContentLoaded', () => {
             const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('nav a');
-
+    
             function setActiveMenu() {
                 let scrollPosition = window.scrollY;
-
-                if (scrollPosition < sections[0].offsetTop - 100) {
-                    navLinks.forEach(link => link.classList.remove('text-blue-600', 'font-bold'));
-                    return;
-                }
-
+    
                 sections.forEach(section => {
                     const sectionTop = section.offsetTop - 100;
                     const sectionHeight = section.offsetHeight;
                     const sectionId = section.getAttribute('id');
-
+    
                     if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                         navLinks.forEach(link => {
                             link.classList.remove('text-blue-600', 'font-bold');
-                            if (link.getAttribute('href') === #${sectionId}) {
+                            if (link.getAttribute('href') === `#${sectionId}`) {
                                 link.classList.add('text-blue-600', 'font-bold');
                             }
                         });
                     }
                 });
             }
-
+    
             window.addEventListener('scroll', setActiveMenu);
             setActiveMenu();
         });
-
+    
         const hamburger = document.getElementById('hamburger');
         const mobileMenu = document.getElementById('mobile-menu');
-
+    
         hamburger.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
-
-        // Animasi
+    
+        // Animasi Scroll
         document.addEventListener('DOMContentLoaded', () => {
             const elements = document.querySelectorAll('.scroll-animation');
-
+    
             const handleScroll = () => {
                 elements.forEach(el => {
                     const rect = el.getBoundingClientRect();
-                    if (rect.top < window.innerHeight - 100 && rect.bottom > 0) {
-                        el.classList.add('visible'); // Tambahkan kelas saat elemen terlihat
+                    if (rect.top < window.innerHeight - 100) {
+                        el.classList.add('visible', 'opacity-100', 'translate-y-0');
                     } else {
-                        el.classList.remove('visible'); // Hapus kelas saat elemen keluar viewport
+                        el.classList.remove('visible', 'opacity-100', 'translate-y-0');
                     }
                 });
             };
-
+    
             window.addEventListener('scroll', handleScroll);
             handleScroll(); // Jalankan sekali saat halaman dimuat
         });
-    </script>   
+    </script>
+    
 </body>
 </html>
