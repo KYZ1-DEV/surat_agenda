@@ -1,7 +1,9 @@
 <?php
 
 use App\Models\SuratMasuk;
+use App\Models\SuratKeluar;
 use App\Exports\UsersExport;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
@@ -61,7 +63,9 @@ Route::middleware(['auth','verified','chek_role'])->group(function(){
 
     Route::prefix('admin')->middleware('role:admin')->group(function () {
         
+
          Route::get('/export-users', function () {
+
             $filePath = '/tmp/users.xlsx'; 
             Excel::store(new UsersExport, $filePath);
 
@@ -137,6 +141,34 @@ Route::middleware(['auth','verified','chek_role'])->group(function(){
     Route::get('/export-surat-keluar/{bidang_surat}', function ($bidang_surat) {
         return Excel::download(new \App\Exports\SuratKeluarExportBidangSurat($bidang_surat), 'surat_keluar_' . $bidang_surat . '.xlsx');
     })->name('export.surat.keluar');
+
+
+    Route::get('/export-surat-pdf/{bidang_surat}/{tipe_surat}', function($bidang_surat,$tipe_surat) {
+
+
+                if ($tipe_surat == 'surat-keluar') {
+                    $suratKeluar = SuratKeluar::with('suratMasuk') 
+                        ->where('bidang_surat', $bidang_surat)
+                        ->get();
+            
+                    // Kirim data ke view
+                    $pdf = Pdf::loadView('Pdf.surat_keluar', compact('suratKeluar','bidang_surat'));
+            
+                    // Unduh file PDF
+                    return $pdf->download('surat_keluar_'.$bidang_surat.'.pdf');
+                }else {
+                    $suratMasuk = SuratMasuk::with('suratKeluar') 
+                        ->where('bidang_surat', $bidang_surat)
+                        ->get();
+            
+                    // Kirim data ke view
+                    $pdf = Pdf::loadView('Pdf.surat_masuk', compact('suratMasuk','bidang_surat'));
+            
+                    // Unduh file PDF
+                    return $pdf->download('surat_masuk_'.$bidang_surat.'.pdf');
+                }
+               
+    })->name('export-surat-pdf');
 
 
 

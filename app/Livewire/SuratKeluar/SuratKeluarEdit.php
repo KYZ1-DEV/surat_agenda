@@ -43,10 +43,16 @@ class SuratKeluarEdit extends Component
     public function set_surat(SuratKeluar $id){
 
         $this->form->setSuratKeluar($id);
-        
-        $this->modelSuratMasuk = SuratMasuk::find($this->form->id_surat_masuk)->firstOrFail();
-        // dd($this->modelSuratMasuk);
-        $this->suratMasuk = $this->modelSuratMasuk->nomor_surat ." - " .$this->modelSuratMasuk->asal_surat_pengirim;
+        // dd(
+        // is_null($this->form->id_surat_masuk)
+        // );
+        if (!is_null($this->form->id_surat_masuk)) {
+            $this->modelSuratMasuk = SuratMasuk::find($this->form->id_surat_masuk)->firstOrFail();
+            // dd($this->modelSuratMasuk);
+            $this->suratMasuk = $this->modelSuratMasuk->nomor_surat ." - " .$this->modelSuratMasuk->asal_surat_pengirim;
+        }else{
+            $this->suratMasuk = "Tidak Ada Surat Masuk";
+        }
         // dd($this->suratMasuk);
         $this->modalSuratKeluarEdit = true;
     }

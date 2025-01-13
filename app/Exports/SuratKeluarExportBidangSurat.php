@@ -21,7 +21,8 @@ class SuratKeluarExportBidangSurat implements FromQuery, WithHeadings, WithMappi
 
     public function query()
     {
-        return SuratKeluar::where('bidang_surat', $this->bidangSurat);
+        return SuratKeluar::with('suratMasuk') // Eager load relasi suratMasuk
+            ->where('bidang_surat', $this->bidangSurat);
     }
 
     public function headings(): array
@@ -35,7 +36,8 @@ class SuratKeluarExportBidangSurat implements FromQuery, WithHeadings, WithMappi
             'Tujuan Surat',
             'Perihal/Isi Surat',
             'Keterangan',
-            'ID Surat Masuk',
+            'Kategori Surat', // Tambahkan kolom Kategori Surat
+            'Surat Masuk', // Kolom Surat Masuk
             'Dibuat Pada',
             'Diperbarui Pada',
         ];
@@ -44,6 +46,12 @@ class SuratKeluarExportBidangSurat implements FromQuery, WithHeadings, WithMappi
     public function map($suratKeluar): array
     {
         $this->rowNumber++;
+
+        // Logika untuk kolom Surat Masuk
+        $suratMasuk = $suratKeluar->suratMasuk
+            ? $suratKeluar->suratMasuk->nomor_surat . ' - ' . $suratKeluar->suratMasuk->asal_surat_pengirim
+            : 'Tidak ada surat masuk';
+
         return [
             $this->rowNumber,
             $suratKeluar->id,
@@ -53,7 +61,8 @@ class SuratKeluarExportBidangSurat implements FromQuery, WithHeadings, WithMappi
             $suratKeluar->tujuan_surat,
             $suratKeluar->perihal_isi_surat,
             $suratKeluar->keterangan,
-            $suratKeluar->id_surat_masuk,
+            $suratKeluar->kategori_surat, // Tambahkan kategori surat
+            $suratMasuk, // Kolom Surat Masuk
             $suratKeluar->created_at,
             $suratKeluar->updated_at,
         ];
@@ -61,7 +70,7 @@ class SuratKeluarExportBidangSurat implements FromQuery, WithHeadings, WithMappi
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getStyle('A1:K1')->applyFromArray([
+        $sheet->getStyle('A1:L1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['argb' => 'FFFFFFFF'], // Teks putih
@@ -72,7 +81,7 @@ class SuratKeluarExportBidangSurat implements FromQuery, WithHeadings, WithMappi
             ],
         ]);
 
-        $sheet->getStyle('A1:K' . $sheet->getHighestRow())->applyFromArray([
+        $sheet->getStyle('A1:L' . $sheet->getHighestRow())->applyFromArray([
             'borders' => [
                 'allBorders' => [
                     'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,

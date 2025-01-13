@@ -83,7 +83,7 @@
                         <td  class="text-center">{{ $item->tujuan_surat }}</td>
                         <td  class="text-center">{{ $item->perihal_isi_surat }}</td>
                         <td  class="text-center">{{ $item->keterangan }}</td>
-                        <td  class="text-center">{{ $item->suratMasuk->asal_surat_pengirim }}</td>
+                        <td  class="text-center">{{ $item->suratMasuk->asal_surat_pengirim ?? "Tidak Ada Surat Masuk"}}</td>
                         <td class="text-center">
                             <x-button @click="$dispatch('dispatch-surat-keluar-table-edit', { id: '{{ $item->id }}' })"
                                 type="button" class="text-sm">Detail</x-button>
