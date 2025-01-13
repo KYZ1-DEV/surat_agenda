@@ -19,6 +19,9 @@ class SuratKeluarForm extends Form
     #[Validate('in:kearsipan,sekretariat,layanan,pengembangan', message: 'Bidang surat tidak valid')]
     public $bidang_surat;
 
+    #[Validate('required', message: 'Kategori surat wajib diisi')]
+    public $kategori_surat;
+
     #[Validate('required', message: 'Nomor surat wajib diisi')]
     public $nomor_surat;
 
@@ -34,7 +37,7 @@ class SuratKeluarForm extends Form
     #[Validate('required', message: 'Keterangan wajib diisi')]
     public $keterangan;
 
-    #[Validate('required', message: 'ID Surat Masuk wajib diisi')]
+    #[Validate('nullable', message: 'ID Surat Masuk tidak wajib')]
     #[Validate('integer', message: 'ID Surat Masuk harus berupa angka')]
     public $id_surat_masuk;
 
@@ -45,14 +48,17 @@ class SuratKeluarForm extends Form
 
         return SuratKeluar::create([
             'bidang_surat' => $this->bidang_surat,
+            'kategori_surat' => $this->kategori_surat,
             'tanggal_kirim_surat' => $this->tanggal_kirim_surat,
             'nomor_surat' => $this->nomor_surat,
             'tanggal_surat' => $this->tanggal_surat,
             'tujuan_surat' => $this->tujuan_surat,
             'perihal_isi_surat' => $this->perihal_isi_surat,
             'keterangan' => $this->keterangan,
-            'id_surat_masuk' => $this->id_surat_masuk,
+            'id_surat_masuk' => $this->id_surat_masuk == '' ? null : $this->id_surat_masuk ,
         ]);
+
+
     }
 
     public function update($id)
@@ -63,6 +69,7 @@ class SuratKeluarForm extends Form
 
         $SuratKeluar->update([
             'bidang_surat' => $this->bidang_surat,
+            'kategori_surat' => $this->kategori_surat,
             'tanggal_kirim_surat' => $this->tanggal_kirim_surat,
             'nomor_surat' => $this->nomor_surat,
             'tanggal_surat' => $this->tanggal_surat,
@@ -81,6 +88,7 @@ class SuratKeluarForm extends Form
         $this->id = $SuratKeluar->id;
         
         $this->bidang_surat = $SuratKeluar->bidang_surat;
+        $this->kategori_surat = $SuratKeluar->kategori_surat;
         $this->tanggal_kirim_surat = $SuratKeluar->tanggal_kirim_surat;
         $this->nomor_surat = $SuratKeluar->nomor_surat;
         $this->tanggal_surat = $SuratKeluar->tanggal_surat;

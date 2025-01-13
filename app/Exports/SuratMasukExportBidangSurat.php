@@ -50,7 +50,7 @@ class SuratMasukExportBidangSurat implements FromQuery, WithHeadings, WithMappin
         return [
             $this->rowNumber,
             $suratMasuk->id,
-            $suratMasuk->type_surat,
+            $suratMasuk->bidang_surat,
             $suratMasuk->kategori_surat,
             $suratMasuk->tanggal_terima_surat,
             $suratMasuk->no_agenda,
