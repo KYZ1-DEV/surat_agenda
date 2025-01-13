@@ -19,16 +19,6 @@ class ForceHttps
         if(str_ends_with($request->getHost(), 'vercel.app')){
             URL::forceScheme('https');
         }
-    
-       if ($request->routeIs('export.users')) {
-                return $next($request);
-            }
-
-        $request->merge(
-            array_map(function ($value) {
-                return $value === '' ? null : $value;
-            }, $request->all())
-        );
 
         return $next($request);
 
