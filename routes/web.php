@@ -63,7 +63,9 @@ Route::middleware(['auth','verified','chek_role'])->group(function(){
 
     Route::prefix('admin')->middleware('role:admin')->group(function () {
         
-        Route::get('/export-users', function () {
+
+         Route::get('/export-users', function () {
+
             $filePath = '/tmp/users.xlsx'; 
             Excel::store(new UsersExport, $filePath);
 
